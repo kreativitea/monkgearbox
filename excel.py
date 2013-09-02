@@ -58,12 +58,12 @@ def select_excel():
     excel_extensions = ('xlsx', 'xls', 'xlsm')
     try:
         excel_sheets = [f for f in os.listdir(os.getcwd())
-                        if f.endswith(excel_extensions)]
+                        if f.endswith(excel_extensions) and not f.startswith('~$')]
 
         if len(excel_sheets) == 1:
-            return excel_sheets[0]
+            return os.path.join(os.getcwd(), excel_sheets[0])
 
-        elif len(excel-sheets) > 1:
+        elif len(excel_sheets) > 1:
             print "Please select a toolbox sheet:"
             for i, v in enumerate(excel_sheets, 1):
                 print '{}: {}'.format(i, v)
@@ -73,7 +73,7 @@ def select_excel():
                 try:
                     sheet = excel_sheets[int(selection)-1]
                     print 'attempting to load: {}'.format(sheet)
-                    return sheet
+                    return os.path.join(os.getcwd(), sheet)
                 except:
                     print "I'm sorry, that's not a valid selection."
 
