@@ -21,7 +21,7 @@ def load_profile(profile_link=None, t=10):
     ''' Validates and returns a  profile link after loading it from the
     profile.cfg file.
 
-    kwarg is for debugging.
+    kwargs are for debugging.
 
     >>> load_profile('http://d3up.com/b/496741/batuo-dual-ls-5-9')
     'http://d3up.com/b/496741/batuo-dual-ls-5-9'

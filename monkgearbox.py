@@ -1,3 +1,5 @@
+import pprint
+
 from conn import download_content
 from calculations import get_owe
 from calculations import get_data
@@ -8,4 +10,4 @@ if __name__ == '__main__':
     owe = get_owe(content)
     for slot, attributes in get_data(content):
         parse = parse_item(slot, attributes, owe)
-        print slot, parse
+        print pprint.pformat(dict(parse))

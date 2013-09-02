@@ -1,0 +1,4 @@
+lxml
+pywin32
+requests
+beautifulsoup4

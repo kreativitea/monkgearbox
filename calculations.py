@@ -1,10 +1,10 @@
-from collections import namedtuple
-from bs4 import BeautifulSoup
-from collections import defaultdict
-from collections import Counter
 import json
 
-import pprint
+from bs4 import BeautifulSoup
+from collections import Counter
+from collections import namedtuple
+from collections import defaultdict
+
 
 elements = tuple('poison cold fire physical arcane lightning'.split())
 Stat = namedtuple('Stat', 'cell, value')
@@ -19,8 +19,8 @@ def get_owe(content):
             if attribute.startswith(elements) and attribute.endswith('resist'):
                 c[attribute] += int(value)
 
-    resist = c.most_common(1)[0][0].split('-')[0]
-    print "determined {} to be the One With Everything resist".format(resist.upper())
+    resist, value = c.most_common(1)[0]
+    print "determined {} to be the One With Everything resist at {}".format(resist.upper(), value)
     return resist
 
 
@@ -85,25 +85,28 @@ class Item(object):
 
             # otherwise, use the given {attribute: value}
             else:
-                self.data[attribute] = value
+                self.data[str(attribute)] = value
 
     def is_owe_resist(self, attribute):
         ''' Returns True if attribute is the specified owe resist.'''
-        return attribute.startswith(self._owe) and attribute.endswith('resist')
+        return attribute == self._owe
 
     def is_elemental_resist(self, attribute):
         ''' Returns True if an attribute is an elemental resistance. '''
         return attribute.startswith(self._elements) and attribute.endswith('resist')
 
     def is_elemental_damage(self, attribute):
-        ''' Returns true if an attribute is elemental damage. '''
+        ''' Returns True if an attribute is elemental damage. '''
         return attribute.startswith('plus') and attribute.endswith('damage')
 
     def is_elemental_weapon(self, attribute):
+        ''' Returns True if an attribute is the damage component of an elemental weapon. '''
         return attribute.startswith(self._elements) and attribute.endswith('damage')
 
     def is_minmax_damage(self, attribute):
+        ''' Returns True if an attribute is the min-max damage component of a piece of jewelry. '''
         return attribute == 'minmax-damage'
 
     def is_damage(self, attribute):
+        ''' Returns True if an attribute is the damage component of a weapon. '''
         return attribute == 'damage'
