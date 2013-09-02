@@ -51,7 +51,7 @@ def load_profile(profile_link=None, t=10):
         raise ValueError(m)
 
 
-def download_data():
+def download_content():
     ''' Downloads the data from the profile link specified in profile.cfg.
     Connects using requests.'''
     profile = load_profile()
