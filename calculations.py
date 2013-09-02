@@ -11,7 +11,7 @@ Stat = namedtuple('Stat', 'cell, value')
 
 
 def get_owe(content):
-    ''' Unfortunately, its impossible to determine the OWE resist on the fly. '''
+    ''' Unfortunately, its impossible to determine OWE resist on the fly. '''
     c = Counter()
     print 'grabbing One With Everything information...'
     for _, attributes in get_data(content, logoutput=False):
@@ -20,18 +20,19 @@ def get_owe(content):
                 c[attribute] += int(value)
 
     resist, value = c.most_common(1)[0]
-    print "determined {} to be the One With Everything resist at {}".format(resist.upper(), value)
+    print('determined {} to be the One With Everything resist at {}'
+          ''.format(resist.upper(), value))
     return resist
 
 
 def get_data(content, logoutput=True):
-    ''' Downloads and yields the data for each piece of equipment on a d3up page.
-    content is from requests.content (a string). '''
+    ''' Downloads and yields the data for each piece of equipment on
+    a d3up page. `content` is requests.content (a string). '''
     if logoutput:
         print 'parsing data...'
     soup = BeautifulSoup(content, 'lxml')
     equipment = soup.find('table', class_='equipment-table')
-    equipped  = equipment.findAll('span', class_='equipped')
+    equipped = equipment.findAll('span', class_='equipped')
     if logoutput:
         print 'getting information for each piece of equipment...'
     for i in equipped:
@@ -48,13 +49,11 @@ def parse_item(itemdict, owe):
     return item.data
 
 
-def parse_attribute(attribute, cells):
-    pass
-
 class Item(object):
-    ''' The manipulations of an item suitable for populating the monk gearbox table. '''
+    ''' The manipulations of an item suitable for populating the
+    monk gearbox table. '''
     def __init__(self, itemdict, owe=None):
-        self._elements  = elements
+        self._elements = elements
         self._owe = owe
         self.data = defaultdict(int)
 
@@ -91,26 +90,29 @@ class Item(object):
             else:
                 self.data[str(attribute)] = value
 
-    def is_owe_resist(self, attribute):
+    def is_owe_resist(self, attrib):
         ''' Returns True if attribute is the specified owe resist.'''
-        return attribute == self._owe
+        return attrib == self._owe
 
-    def is_elemental_resist(self, attribute):
+    def is_elemental_resist(self, attrib):
         ''' Returns True if an attribute is an elemental resistance. '''
-        return attribute.startswith(self._elements) and attribute.endswith('resist')
+        return attrib.startswith(self._elements)and attrib.endswith('resist')
 
-    def is_elemental_damage(self, attribute):
+    def is_elemental_damage(self, attrib):
         ''' Returns True if an attribute is elemental damage. '''
-        return attribute.startswith('plus') and attribute.endswith('damage')
+        return attrib.startswith('plus') and attrib.endswith('damage')
 
-    def is_elemental_weapon(self, attribute):
-        ''' Returns True if an attribute is the damage component of an elemental weapon. '''
-        return attribute.startswith(self._elements) and attribute.endswith('damage')
+    def is_elemental_weapon(self, attrib):
+        ''' Returns True if an attribute is the damage component
+        of an elemental weapon. '''
+        return attrib.startswith(self._elements) and attrib.endswith('damage')
 
-    def is_minmax_damage(self, attribute):
-        ''' Returns True if an attribute is the min-max damage component of a piece of jewelry. '''
-        return attribute == 'minmax-damage'
+    def is_minmax_damage(self, attrib):
+        ''' Returns True if an attribute is the min-max damage
+        component of a piece of jewelry. '''
+        return attrib == 'minmax-damage'
 
-    def is_damage(self, attribute):
-        ''' Returns True if an attribute is the damage component of a weapon. '''
-        return attribute == 'damage'
+    def is_damage(self, attrib):
+        ''' Returns True if an attribute is the damage component
+        of a weapon. '''
+        return attrib == 'damage'

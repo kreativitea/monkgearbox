@@ -39,8 +39,9 @@ def write_data(filename, sheetname, data):
 
     for k, d in data.items():
         if d.cell:
+            print k, d
             print ('{}: writing value {} to cell {}'
-                   ''.format(ljust(k, 30), d.value, d.cell))
+                   ''.format(ljust(k, 40), d.value, d.cell))
             sheet.Range(d.cell).Value = d.value
         else:
             print ('{}: skipping value {}, no cell'
@@ -58,7 +59,8 @@ def select_excel():
     excel_extensions = ('xlsx', 'xls', 'xlsm')
     try:
         excel_sheets = [f for f in os.listdir(os.getcwd())
-                        if f.endswith(excel_extensions) and not f.startswith('~$')]
+                        if f.endswith(excel_extensions) and
+                        not f.startswith('~$')]
 
         if len(excel_sheets) == 1:
             return os.path.join(os.getcwd(), excel_sheets[0])
@@ -76,7 +78,8 @@ def select_excel():
                     return os.path.join(os.getcwd(), sheet)
                 except:
                     print "I'm sorry, that's not a valid selection."
-
-    except:
+    except IOError:
+        raise IOError("Workbook not found")
+    except Exception as e:
         print "Unable to instantiate workbook!"
-        raise IOError("Workbook not found.")
+        print "Exception raised: {}".format(repr(e))
