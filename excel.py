@@ -15,10 +15,10 @@ except Exception as e:
     raise
 
 
-def write_data(toolbox, data):
+def write_data(filename, sheetname, data):
     ''' Opens the workbook, then the worksheet, then writes the data.'''
     try:
-        workbook = excel.Workbooks.Open(toolbox)
+        workbook = excel.Workbooks.Open(filename)
     except Exception as e:
         print "Unable to instantiate workbook!"
         print repr(e)
@@ -28,7 +28,7 @@ def write_data(toolbox, data):
         raise IOError("Workbook not found.")
 
     try:
-        sheet = get_sheet('Inputs')
+        sheet = get_sheet(sheetname)
     except Exception as e:
         print "Unable to instantiate worksheet!"
         print repr(e)
@@ -55,14 +55,15 @@ def get_sheet(sheet):
 
 
 def select_excel():
+    excel_extensions = ('xlsx', 'xls', 'xlsm')
     try:
         excel_sheets = [f for f in os.listdir(os.getcwd())
-                        if f.endswith('xlsx')]
+                        if f.endswith(excel_extensions)]
 
         if len(excel_sheets) == 1:
             return excel_sheets[0]
 
-        else:
+        elif len(excel-sheets) > 1:
             print "Please select a toolbox sheet:"
             for i, v in enumerate(excel_sheets, 1):
                 print '{}: {}'.format(i, v)

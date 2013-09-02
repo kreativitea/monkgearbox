@@ -1,13 +1,31 @@
 import pprint
 
 from conn import download_content
+
+from excel import write_data
+from excel import select_excel
+
+from constants import cells
+
+from calculations import Stat
 from calculations import get_owe
 from calculations import get_data
 from calculations import parse_item
 
 if __name__ == '__main__':
+    # initialize storage
+    workbook = select_excel()
+    
     content = download_content()
     owe = get_owe(content)
+
+    # grab each item
     for slot, item in get_data(content):
         attributes = parse_item(item, owe)
-        print pprint.pformat(dict(attributes))
+        
+        # for each item, grab each attribute
+        for attribute, value in attributes.items():
+            cellname = '{}-{}'.format(slot, attribute)
+            cells[cellname] = Stat(cells.get(cellname, ''), value)
+
+    write_data(workbook, 'Gear', cells)

@@ -48,6 +48,9 @@ def parse_item(itemdict, owe):
     return item.data
 
 
+def parse_attribute(attribute, cells):
+    pass
+
 class Item(object):
     ''' The manipulations of an item suitable for populating the monk gearbox table. '''
     def __init__(self, itemdict, owe=None):
