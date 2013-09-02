@@ -40,16 +40,17 @@ def get_data(content, logoutput=True):
         yield i['data-slot'], json.loads(i.a.attrs['data-json'])
 
 
-def parse_item(slot, itemdict, owe):
+def parse_item(itemdict, owe):
+    ''' Returns the attributes from a single item. '''
     attributes = itemdict.get('attrs', {})
     attributes.update(itemdict.get('stats', {}))
-    item = Item(slot, attributes, owe)
+    item = Item(attributes, owe)
     return item.data
 
 
 class Item(object):
     ''' The manipulations of an item suitable for populating the monk gearbox table. '''
-    def __init__(self, slot, itemdict, owe=None):
+    def __init__(self, itemdict, owe=None):
         self._elements  = elements
         self._owe = owe
         self.data = defaultdict(int)
