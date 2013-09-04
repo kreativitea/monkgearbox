@@ -38,14 +38,23 @@ def write_data(filename, sheetname, data):
         raise IOError("Worksheet not found")
 
     for k, d in data.items():
-        if d.cell:
-            print k, d
-            print ('{}: writing value {} to cell {}'
-                   ''.format(ljust(k, 40), d.value, d.cell))
-            sheet.Range(d.cell).Value = d.value
-        else:
+        if not d.cell:
             print ('{}: skipping value {}, no cell'
-                   ''.format(ljust(k, 30), d.value))
+                   ''.format(ljust(k, 40, '.'), d.value))
+
+        else:
+            # only *say* we skip the cell if there is no value
+            # with a value of 0, this way, it resets the cell
+            if not d.value:
+                print ('{}: skipping cell : {} : no value'
+                       ''.format(ljust(k, 40, '.'), d.cell))
+            else:
+                print ('{}: writing to cell : {} : value {} '
+                       ''.format(ljust(k, 40, '.'), d.cell, d.value))
+
+            # excel com bound method
+            sheet.Range(d.cell).Value = d.value
+
     excel.Visible = True
 
 
@@ -62,7 +71,7 @@ def select_excel():
         # if the extension is of an excel type
         # and is not an office temporary workbook
         excel_sheets = [f for f in os.listdir(os.getcwd())
-                        if f.endswith(excel_extensions) 
+                        if f.endswith(excel_extensions)
                         and not f.startswith('~$')]
 
         if len(excel_sheets) == 1:
