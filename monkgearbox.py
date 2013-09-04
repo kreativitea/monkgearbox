@@ -32,4 +32,4 @@ if __name__ == '__main__':
                 # no cell is set up to take this value
                 pass
 
-    # write_data(workbook, 'Gear', cells)
+    write_data(workbook, 'Gear', cells)

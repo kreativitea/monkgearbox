@@ -86,9 +86,16 @@ class Item(object):
                 self.data['weapon-max-damage'] = value.get('max', 0)
                 self.data['weapon-min-damage'] = value.get('min', 0)
 
+
+
             # otherwise, use the given {attribute: value}
             else:
                 self.data[str(attribute)] = value
+
+    def is_percentage_value(self, attrib):
+        ''' Returns True if attribute is a percenage based value.'''
+        percentage_values = ('critical-hit-damage')
+        return attrib in percentage_values
 
     def is_owe_resist(self, attrib):
         ''' Returns True if attribute is the specified owe resist.'''

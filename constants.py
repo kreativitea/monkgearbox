@@ -58,3 +58,5 @@ def make_cells():
     cells.update(jewelry_extra_cells())
     cells.update(weapon_main_cells())
     return cells
+
+cells = make_cells()
