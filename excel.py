@@ -58,9 +58,12 @@ def get_sheet(sheet):
 def select_excel():
     excel_extensions = ('xlsx', 'xls', 'xlsm')
     try:
+        # for each file in the directory
+        # if the extension is of an excel type
+        # and is not an office temporary workbook
         excel_sheets = [f for f in os.listdir(os.getcwd())
-                        if f.endswith(excel_extensions) and
-                        not f.startswith('~$')]
+                        if f.endswith(excel_extensions) 
+                        and not f.startswith('~$')]
 
         if len(excel_sheets) == 1:
             return os.path.join(os.getcwd(), excel_sheets[0])

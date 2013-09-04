@@ -18,14 +18,13 @@ def error_out(message, t):
 
 
 def load_profile(profile_link=None, t=10):
-    ''' Validates and returns a  profile link after loading it from the
+    ''' Validates and returns a profile link after loading it from the
     profile.cfg file.
 
-    kwargs are for debugging.
+    kwargs are for debugging and testing purposes only.
 
     >>> load_profile('http://d3up.com/b/496741/batuo-dual-ls-5-9')
     'http://d3up.com/b/496741/batuo-dual-ls-5-9'
-
 
     >>> try:
     ...     load_profile('http://google.com', t=0)
@@ -55,7 +54,7 @@ def download_content(debug=False):
     ''' Downloads the data from the profile link specified in profile.cfg.
     Connects using requests.'''
     if debug:
-        print 'Debug mode enabled! reading from stored contents.'
+        print 'Debug mode invoked! reading from stored contents.'
         with open('content.txt') as f:
             return f.read()
 

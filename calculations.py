@@ -88,7 +88,7 @@ class Item(object):
 
             # some values must be expressed as percentages
             elif self.is_percentage_value(attribute):
-                self.data[str(attribute)] = "{0:.2f}".format(value)
+                self.data[str(attribute)] = value / 100.0
 
             # otherwise, use the given {attribute: value}
             else:
@@ -96,7 +96,8 @@ class Item(object):
 
     def is_percentage_value(self, attrib):
         ''' Returns True if attribute is a percenage based value.'''
-        percentage_values = ('critical-hit-damage')
+        percentage_values = ('critical-hit-damage', 'critical-hit',
+                             'attack-speed', 'life-steal', 'plus-life')
         return attrib in percentage_values
 
     def is_owe_resist(self, attrib):

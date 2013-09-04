@@ -43,6 +43,7 @@ def weapon_main_cells():
     
     return cellsdict(attributes, slots, columns, rows)
 
+
 def cellsdict(attributes, slots, columns, rows):
     ''' Takes a list of attributes, the slots they go into, and their 
     respective cells and drops them into a dictionary suitable for
