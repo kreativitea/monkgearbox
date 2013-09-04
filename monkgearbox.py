@@ -25,10 +25,11 @@ if __name__ == '__main__':
         # for each item, grab each attribute
         for attribute, value in attributes.items():
             cellname = '{}-{}'.format(slot, attribute)
+            print cellname
             try:
                 cells[cellname] = Stat(cells[cellname].cell, value)
             except KeyError as e:
                 # no cell is set up to take this value
                 pass
 
-    write_data(workbook, 'Gear', cells)
+    # write_data(workbook, 'Gear', cells)

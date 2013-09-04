@@ -40,7 +40,7 @@ def get_data(content, logoutput=True):
             print 'reading data for data-slot: {}'.format(i['data-slot'])
         yield i['data-slot'], json.loads(i.a.attrs['data-json'])
 
-
+#TODO: Figure out whether or not a shield is parsed properly
 def parse_item(itemdict, owe):
     ''' Returns the attributes from a single item. '''
     attributes = itemdict.get('attrs', {})
