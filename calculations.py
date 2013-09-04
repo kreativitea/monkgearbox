@@ -86,7 +86,9 @@ class Item(object):
                 self.data['weapon-max-damage'] = value.get('max', 0)
                 self.data['weapon-min-damage'] = value.get('min', 0)
 
-
+            # some values must be expressed as percentages
+            elif self.is_percentage_value(attribute):
+                self.data[str(attribute)] = "{0:.2f}".format(value)
 
             # otherwise, use the given {attribute: value}
             else:

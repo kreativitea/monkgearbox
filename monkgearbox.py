@@ -15,7 +15,7 @@ if __name__ == '__main__':
     workbook = select_excel()
 
     # download content
-    content = download_content()
+    content = download_content(debug=True)
     owe = get_owe(content)
 
     # grab each item
@@ -25,7 +25,6 @@ if __name__ == '__main__':
         # for each item, grab each attribute
         for attribute, value in attributes.items():
             cellname = '{}-{}'.format(slot, attribute)
-            print cellname
             try:
                 cells[cellname] = Stat(cells[cellname].cell, value)
             except KeyError as e:
