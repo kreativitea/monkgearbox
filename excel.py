@@ -38,16 +38,18 @@ def write_data(filename, sheetname, data):
         raise IOError("Worksheet not found")
 
     for k, d in data.items():
+        # if there's no cell, there's no data to write
         if not d.cell:
             print ('{}: skipping value {}, no cell'
                    ''.format(ljust(k, 40, '.'), d.value))
 
+        # otherwise, write something
         else:
-            # only *say* we skip the cell if there is no value
-            # with a value of 0, this way, it resets the cell
+            # if there's no value, reset the cell to zero
             if not d.value:
-                print ('{}: skipping cell : {} : no value'
+                print ('{}: writing to cell : {} : no value'
                        ''.format(ljust(k, 40, '.'), d.cell))
+            # if there is, write the value to the cell
             else:
                 print ('{}: writing to cell : {} : value {} '
                        ''.format(ljust(k, 40, '.'), d.cell, d.value))
@@ -59,8 +61,12 @@ def write_data(filename, sheetname, data):
 
 
 def get_sheet(sheet):
+    ''' Given the name of a sheet, returns the sheet object. '''
+    # for each sheet in the workbook,
     for s in range(1, excel.Sheets.Count + 1):
+        # if the worksheet name matches the variable sheet,
         if excel.Sheets(s).Name == sheet:
+            # return the sheet.
             return excel.Sheets(s)
 
 
@@ -74,9 +80,11 @@ def select_excel():
                         if f.endswith(excel_extensions)
                         and not f.startswith('~$')]
 
+        # if there's only one sheet, use it.
         if len(excel_sheets) == 1:
             return os.path.join(os.getcwd(), excel_sheets[0])
 
+        # if there's more than one, prompt the user to select one
         elif len(excel_sheets) > 1:
             print "Please select a toolbox sheet:"
             for i, v in enumerate(excel_sheets, 1):
