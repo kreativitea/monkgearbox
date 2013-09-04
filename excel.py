@@ -37,7 +37,7 @@ def write_data(filename, sheetname, data):
         print "Unable to instantiate worksheet!"
         raise IOError("Worksheet not found")
 
-    for k, d in data.items():
+    for k, d in sorted(data.items()):
         # if there's no cell, there's no data to write
         if not d.cell:
             print ('{}: skipping value {}, no cell'

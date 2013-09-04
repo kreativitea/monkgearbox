@@ -54,9 +54,14 @@ def download_content(debug=False):
     ''' Downloads the data from the profile link specified in profile.cfg.
     Connects using requests.'''
     if debug:
-        print 'Debug mode invoked! reading from stored contents.'
-        with open('content.txt') as f:
-            return f.read()
+        try:
+            print 'Debug mode invoked! reading from stored contents.'
+            with open('content.txt') as f:
+                return f.read()
+        except Exception as e:
+            print 'debug mode active, but no source file!'
+            print '{}'.format(repr(e))
+            print 'attempting to connect to the internet to download data instead...'
 
     profile = load_profile()
     print 'downloading data now...'
