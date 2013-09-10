@@ -45,14 +45,26 @@ def get_data(content, logoutput=True):
 def parse_item(itemdict, owe):
     ''' Returns the attributes from a single item. '''
     attributes = itemdict.get('attrs', {})
-    attributes.update(itemdict.get('stats', {}))
+
+    # stats object could be empty
+    try:
+        attributes.update(itemdict.get('stats', {}))
+    except TypeError:
+        pass
+        
     item = Item(attributes, owe)
     return item.data
 
 
+def is_shield(itemdict):
+    return itemdict.get('type', '') == 'shield'
+
+
 class Item(object):
     ''' The manipulations of an item suitable for populating the
-    monk gearbox table. '''
+    monk gearbox table. 
+    
+    This is really sloppy, I know. '''
     def __init__(self, itemdict, owe=None):
         self._elements = elements
         self._owe = owe
@@ -61,8 +73,14 @@ class Item(object):
         # go through each case here
         for attribute, value in itemdict.items():
 
+            if attribute == 'plus-damage':
+                self.data['plus-damage'] = value / 100.0
+
+            elif attribute == 'plus-lightning-damage-skills':
+                self.data['plus-lightning-damage-skills'] = value / 100.0
+
             # merge all sources of elemental damage together
-            if self.is_elemental_damage(attribute):
+            elif self.is_elemental_damage(attribute):
                 self.data['plus-elemental-damage'] = value / 100.0
 
             # move elemental min-max damage into distinct categories
@@ -91,15 +109,26 @@ class Item(object):
             elif self.is_percentage_value(attribute):
                 self.data[str(attribute)] = value / 100.0
 
+            elif self.is_block_amount(attribute):
+                self.data['block-amount-max'] = value.get('max', 0)
+                self.data['block-amount-min'] = value.get('min', 0)
+            
+            elif self.is_skill(attribute):
+                self.data[attribute] = value / 100.0
+
             # otherwise, use the given {attribute: value}
             else:
                 self.data[str(attribute)] = value
+    
+    def is_skill(self, attrib):
+        return attrib.startswith('mk-')
 
     def is_percentage_value(self, attrib):
         ''' Returns True if attribute is a percenage based value.'''
         percentage_values = ('critical-hit-damage', 'critical-hit',
                              'attack-speed', 'life-steal', 'plus-life',
-                             'plus-damage plus-lightning-damage-skills')
+                             'plus-damage plus-lightning-damage-skills',
+                             'block-chance')
         return attrib in percentage_values
 
     def is_owe_resist(self, attrib):
@@ -131,3 +160,7 @@ class Item(object):
         ''' Returns True if an attribute is the damage component
         of a weapon. '''
         return attrib == 'damage'
+
+    def is_block_amount(self, attrib):
+        ''' Returns True if an attribute is block amount. '''
+        return attrib == 'block-amount'

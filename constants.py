@@ -47,6 +47,15 @@ def weapon_main_cells():
     return cellsdict(attributes, slots, columns, rows)
 
 
+def monk_skill_cells():
+    ''' Creates the attributes for monk skills '''
+    attributes = 'mk-sweeping-wind mk-fists-of-thunder'.split()
+    slots = ['helm']
+    columns = 'PQ'
+    rows = ['34']
+    return cellsdict(attributes, slots, columns, rows)
+
+
 def mh_attrib_cells():
     ''' Creates the attribute values of the mh weapon cells. '''
     attributes = ('speed attack-speed plus-aps plus-damage'
@@ -69,13 +78,24 @@ def oh_attrib_cells():
     return cellsdict(attributes, slots, columns, rows, transpose=True)
 
 
+def shield_attrib_cells():
+    ''' Creates the attribute values of the shield cells. '''
+    attributes = ('armor strength elemental-resist resist-all vitality'
+                  ' dexterity intelligence critical-hit plus-life'
+                  ' block-chance block-amount-max block-amount-min').split()
+    slots = ['shield']
+    columns = 'EFGHIJKLMNOP'
+    rows = [79]
+
+    return cellsdict(attributes, slots, columns, rows)
+
+
 def cellsdict(attributes, slots, columns, rows, transpose=False):
     ''' Takes a list of attributes, the slots they go into, and their
     respective cells and drops them into a dictionary suitable for
     consumption by the excel writer. '''
     if transpose:
         columns, rows = rows, columns
-        # switches row and col
         return {'{}-{}'.format(prefix, suffix): Stat('{}{}'.format(row, col), 0)
             for (suffix, col), (prefix, row)
             in product(zip(attributes, columns),
@@ -95,6 +115,8 @@ def make_cells():
     cells.update(weapon_main_cells())
     cells.update(oh_attrib_cells())
     cells.update(mh_attrib_cells())
+    cells.update(shield_attrib_cells())
+    cells.update(monk_skill_cells())
     return cells
 
 

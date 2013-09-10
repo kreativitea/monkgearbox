@@ -11,20 +11,27 @@ from calculations import Stat
 from calculations import get_owe
 from calculations import get_data
 from calculations import parse_item
+from calculations import is_shield
 
 if __name__ == '__main__':
     # initialize storage
     workbook = select_excel()
 
     # download content
-    content = download_content(debug=True)
+    content = download_content(debug=False)
     owe = get_owe(content)
 
     # grab each item
     for slot, item in get_data(content):
         attributes = parse_item(item, owe)
-        #if slot == 'offhand':
-        #    pprint.pprint(item)
+
+        # if offhand is shield, set accordingly
+        if slot == 'offhand':
+            if is_shield(item):
+                slot = 'shield'
+
+        if slot == 'helm':
+            pprint.pprint(item)
 
         # for each item, grab each attribute
         for attribute, value in attributes.items():
