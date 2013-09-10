@@ -26,7 +26,8 @@ def elemental_damage_cells():
 
 def jewelry_extra_cells():
     ''' Creates the min-max value cells for jewelry. '''
-    attributes = 'min max life-on-hit plus-elemental-damage'.split()
+    attributes = ('min-damage max-damage life-on-hit'
+                  ' plus-elemental-damage').split()
     slots = 'ring1 ring2 amulet'.split()
     columns = 'PQRS'
     rows = '44 49 73'.split()
@@ -38,22 +39,53 @@ def weapon_main_cells():
     ''' Creates the main values of the weapon cells. '''
     attributes = ('strength vitality dexterity intelligence'
                   ' critical-hit-damage life-steal life-on-hit'
-                  ' elemental-damage').split()
+                  ' plus-elemental-damage plus-lightning-damage-skills').split()
     slots = 'mainhand offhand'.split()
-    columns = 'EFGHIJKL'
+    columns = 'EFGHIJKLM'
     rows = '54 63'.split()
 
     return cellsdict(attributes, slots, columns, rows)
 
 
-def cellsdict(attributes, slots, columns, rows):
+def mh_attrib_cells():
+    ''' Creates the attribute values of the mh weapon cells. '''
+    attributes = ('speed attack-speed plus-aps plus-damage'
+                  ' weapon-min-damage weapon-max-damage'
+                  ' elemental-min-damage elemental-max-damage').split()
+    slots = ['mainhand']
+    columns = 'C'
+    rows = range(53, 61)
+    return cellsdict(attributes, slots, columns, rows, transpose=True)
+
+
+def oh_attrib_cells():
+    ''' Creates the attribute values of the oh weapon cells. '''
+    attributes = ('speed attack-speed plus-aps plus-damage'
+                  ' weapon-min-damage weapon-max-damage'
+                  ' elemental-min-damage elemental-max-damage').split()
+    slots = ['offhand']
+    columns = 'C'
+    rows = range(62, 70)
+    return cellsdict(attributes, slots, columns, rows, transpose=True)
+
+
+def cellsdict(attributes, slots, columns, rows, transpose=False):
     ''' Takes a list of attributes, the slots they go into, and their
     respective cells and drops them into a dictionary suitable for
     consumption by the excel writer. '''
-    return {'{}-{}'.format(prefix, suffix): Stat('{}{}'.format(col, row), 0)
+    if transpose:
+        columns, rows = rows, columns
+        # switches row and col
+        return {'{}-{}'.format(prefix, suffix): Stat('{}{}'.format(row, col), 0)
             for (suffix, col), (prefix, row)
             in product(zip(attributes, columns),
-                       zip(slots, rows))}
+                        zip(slots, rows))}
+
+    else:
+        return {'{}-{}'.format(prefix, suffix): Stat('{}{}'.format(col, row), 0)
+                for (suffix, col), (prefix, row)
+                in product(zip(attributes, columns),
+                           zip(slots, rows))}
 
 
 def make_cells():
@@ -61,6 +93,8 @@ def make_cells():
     cells.update(elemental_damage_cells())
     cells.update(jewelry_extra_cells())
     cells.update(weapon_main_cells())
+    cells.update(oh_attrib_cells())
+    cells.update(mh_attrib_cells())
     return cells
 
 

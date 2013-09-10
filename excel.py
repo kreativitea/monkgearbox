@@ -45,6 +45,7 @@ def write_data(filename, sheetname, data):
 
         # otherwise, write something
         else:
+            pass
             # if there's no value, reset the cell to zero
             if not d.value:
                 print ('{}: writing to cell : {} : no value'

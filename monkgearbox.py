@@ -1,3 +1,5 @@
+import pprint
+
 from conn import download_content
 
 from excel import write_data
@@ -21,6 +23,8 @@ if __name__ == '__main__':
     # grab each item
     for slot, item in get_data(content):
         attributes = parse_item(item, owe)
+        #if slot == 'offhand':
+        #    pprint.pprint(item)
 
         # for each item, grab each attribute
         for attribute, value in attributes.items():

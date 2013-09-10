@@ -63,7 +63,7 @@ class Item(object):
 
             # merge all sources of elemental damage together
             if self.is_elemental_damage(attribute):
-                self.data['plus-elemental-damage'] = value
+                self.data['plus-elemental-damage'] = value / 100.0
 
             # move elemental min-max damage into distinct categories
             elif self.is_elemental_weapon(attribute):
@@ -98,7 +98,8 @@ class Item(object):
     def is_percentage_value(self, attrib):
         ''' Returns True if attribute is a percenage based value.'''
         percentage_values = ('critical-hit-damage', 'critical-hit',
-                             'attack-speed', 'life-steal', 'plus-life')
+                             'attack-speed', 'life-steal', 'plus-life',
+                             'plus-damage plus-lightning-damage-skills')
         return attrib in percentage_values
 
     def is_owe_resist(self, attrib):
@@ -109,9 +110,12 @@ class Item(object):
         ''' Returns True if an attribute is an elemental resistance. '''
         return attrib.startswith(self._elements)and attrib.endswith('resist')
 
-    def is_elemental_damage(self, attrib):
+    def is_elemental_damage(self, attrib, component=''):
         ''' Returns True if an attribute is elemental damage. '''
-        return attrib.startswith('plus') and attrib.endswith('damage')
+        if attrib.startswith('plus') and attrib.endswith('damage'):
+            component = attrib.replace('plus', '').replace('damage', '')
+
+        return len(component) > 1
 
     def is_elemental_weapon(self, attrib):
         ''' Returns True if an attribute is the damage component
