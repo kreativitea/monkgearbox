@@ -1,5 +1,4 @@
 import json
-
 from bs4 import BeautifulSoup
 from collections import Counter
 from collections import namedtuple
@@ -30,7 +29,7 @@ def get_data(content, logoutput=True):
     a d3up page. `content` is requests.content (a string). '''
     if logoutput:
         print 'parsing data...'
-    soup = BeautifulSoup(content, 'lxml')
+    soup = BeautifulSoup(content)
     equipment = soup.find('table', class_='equipment-table')
     equipped = equipment.findAll('span', class_='equipped')
     if logoutput:
