@@ -18,7 +18,7 @@ if __name__ == '__main__':
     workbook = select_excel()
 
     # download content
-    content = download_content(debug=False)
+    content = download_content()
     owe = get_owe(content)
 
     # grab each item
@@ -30,7 +30,7 @@ if __name__ == '__main__':
             if is_shield(item):
                 slot = 'shield'
 
-        if slot == 'helm':
+        if slot == 'mainhand':
             pprint.pprint(item)
 
         # for each item, grab each attribute

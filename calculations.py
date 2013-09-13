@@ -63,8 +63,9 @@ class Item(object):
     ''' The manipulations of an item suitable for populating the
     monk gearbox table. 
     
-    This is really sloppy, I know. '''
+    Populates item.data dict. '''
     def __init__(self, itemdict, owe=None):
+        self._itemdict = itemdict
         self._elements = elements
         self._owe = owe
         self.data = defaultdict(int)
@@ -77,6 +78,10 @@ class Item(object):
 
             elif attribute == 'plus-lightning-damage-skills':
                 self.data['plus-lightning-damage-skills'] = value / 100.0
+
+            # attack speed on weapons is rolled into the weapon speed, unfortunately
+            elif self.is_attack_speed_weapon(attribute):
+                self.data['speed'] = value / (1 + itemdict['attack-speed']/100.0)
 
             # merge all sources of elemental damage together
             elif self.is_elemental_damage(attribute):
@@ -119,7 +124,13 @@ class Item(object):
             else:
                 self.data[str(attribute)] = value
     
+    def is_attack_speed_weapon(self, attrib):
+        ''' Returns True if this is a weapon with attack speed on it. '''
+        if attrib == 'speed':
+            return 'attack-speed' in self._itemdict
+
     def is_skill(self, attrib):
+        ''' Returns True if this is a specific monk skill. '''
         return attrib.startswith('mk-')
 
     def is_percentage_value(self, attrib):

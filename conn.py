@@ -43,6 +43,7 @@ def load_profile(profile_link=None, t=10):
 
     parse = urlparse(profile_link)
     if parse.netloc == 'd3up.com':
+        print 'profile link is {}'.format(profile_link)
         return profile_link
     else:
         m = error_out('The profile link provided in profile.cfg'
