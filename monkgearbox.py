@@ -30,7 +30,7 @@ if __name__ == '__main__':
             if is_shield(item):
                 slot = 'shield'
 
-        if slot == 'mainhand':
+        if slot == 'pants':
             pprint.pprint(item)
 
         # for each item, grab each attribute

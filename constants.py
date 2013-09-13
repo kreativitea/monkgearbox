@@ -26,7 +26,7 @@ def elemental_damage_cells():
 
 def jewelry_extra_cells():
     ''' Creates the min-max value cells for jewelry. '''
-    attributes = ('min-damage max-damage life-on-hit'
+    attributes = ('min-damage max-damage life-hit'
                   ' plus-elemental-damage').split()
     slots = 'ring1 ring2 amulet'.split()
     columns = 'PQRS'
@@ -35,10 +35,20 @@ def jewelry_extra_cells():
     return cellsdict(attributes, slots, columns, rows)
 
 
+def pants_life_on_hit():
+    ''' Creates LoH cell for pants. '''
+    attributes = ['life-hit']
+    slots = ['pants']
+    columns = 'P'
+    rows = ['29']
+
+    return cellsdict(attributes, slots, columns, rows)
+
+
 def weapon_main_cells():
     ''' Creates the main values of the weapon cells. '''
     attributes = ('strength vitality dexterity intelligence'
-                  ' critical-hit-damage life-steal life-on-hit'
+                  ' critical-hit-damage life-steal life-hit'
                   ' plus-elemental-damage plus-lightning-damage-skills').split()
     slots = 'mainhand offhand'.split()
     columns = 'EFGHIJKLM'
@@ -117,6 +127,7 @@ def make_cells():
     cells.update(mh_attrib_cells())
     cells.update(shield_attrib_cells())
     cells.update(monk_skill_cells())
+    cells.update(pants_life_on_hit())
     return cells
 
 
